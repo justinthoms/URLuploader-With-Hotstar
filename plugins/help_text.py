@@ -57,6 +57,20 @@ async def get_me_info(bot, update):
         disable_web_page_preview=True,
         reply_to_message_id=update.message_id
     )
+    
+@pyrogram.Client.on_message(pyrogram.Filters.command(["reset"]))
+async def help_user(bot, update):
+    # logger.info(update)
+    TRChatBase(update.from_user.id, update.text, "/reset")
+    await bot.send_message(
+        chat_id=update.chat.id,
+        text="reseting...",
+        parse_mode="html",
+        disable_web_page_preview=True,
+        reply_to_message_id=update.message_id)
+    heroku_conn = heroku3.from_key('HEROKU_KEY')
+    app = heroku_conn.apps()['tguploa']
+    app.restart()
 
 
 @pyrogram.Client.on_message(pyrogram.Filters.command(["start"]))
